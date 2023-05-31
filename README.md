@@ -6,6 +6,7 @@ Migration to TypeScript
 
 ***
 
+* @status: alpha
 * @published: June 2023
 * @author: Elmar Hinz
 * @name: `toggle-card-typescript`
