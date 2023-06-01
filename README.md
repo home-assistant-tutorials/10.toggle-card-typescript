@@ -34,9 +34,11 @@ Find all sources inside the `src/` folder!
 
 ## Usage
 
-Refer to the [chapter about possible
+This tutorial is done in form of a protocol of the migration to
+*TypeScript*. I mainly write in the first person therefore. You have several
+choices of how to follow along. Refer to the [chapter about possible
 usages](https://github.com/home-assistant-tutorials/08.toggle-card-with-toolchain#usage)
-in tutorial 08.
+in *tutorial 08* which did take a similar approach.
 
 ## Preparing the project
 
@@ -45,10 +47,10 @@ I create the project folder, copy `hacs.json`, `.gitignore`, `package.json` from
 the `src/` folder. All types of identifiers like class names etc. are renamed
 to match the current tutorial.
 
-Running `npm install` to install the libraries. Running `npm run watch`,
-creating the toggle `tcts`, adding the new resource
-`/local/tutor/10.toggle-card-typescript/dist/card.js` and adding the card to
-the dashboard.
+I run `npm install` to install the libraries. I run `npm run watch`, create the
+toggle `tcts`, add the new resource
+`/local/tutor/10.toggle-card-typescript/dist/card.js` and add the card to the
+dashboard.
 
 ![editor](img/editor.png)
 
@@ -59,7 +61,21 @@ folder.
 
 ![renaming the files](img/ts.png)
 
-Some files count errors. Without any setup *TypeScript* is already at work.
+*VScode* is counting errors for some files. Without any setup *TypeScript* has
+already been recognized and used by the editor.
+
+### `package.json`
+
+The entry point needs to be updated from `.js` to `.ts`.
+
+```json
+  "source": "src/index.ts",
+```
+
+Despite the "errors" shown by the editor the build process keeps working.
+*JavaScript* was fine already and the *TypeScript* additions get just stripped
+during building. The bundler *Parcel* does know what to do without additional
+setup so far.
 
 ### `index.ts`
 
@@ -71,10 +87,10 @@ This array is not declared anywhere.
 ![window error](img/window-error.png)
 
 Declaring types of objects, functions and data is what *TypeScript* is all
-about. *VScode* was able to magically find an load a lot of such declarations,
-but this one is specific to our file.
+about. *VScode* was able to magically find a lot of such declarations, but this
+one is specific to our file.
 
-With the help of stackoverflow I come to this solution and add it into the
+With the help of Stackoverflow I come to this solution and add it into the
 head of the file.
 
 ```ts
@@ -85,7 +101,7 @@ declare global {
 }
 ```
 
-The interface ot the Window in the `global` scope gets "extended" by the new
+The interface of the Window in the `global` scope gets "extended" by the new
 property. `Array<Object>` even describes the type to a certain depth.
 
 ### `cards.ts`
@@ -122,22 +138,13 @@ export class ToggleCardTypeScriptEditor extends LitElement {
   [ ... ]
 ```
 
-### `package.json`
-
-The entry point needs to be updated from `.js` to `.ts`.
-
-```json
-  "source": "src/index.ts",
-```
-
 ### First steps done
 
 We have been able to convert the files from *JavaScript* to *TypeScript* and the
-toolchain is still able to bundle the result. As *TypeScript* is an extension of
-*JavaScript* each `.js` file should also work as `.ts` file.
+toolchain keeps working after the redirection of the entry point.
 
-But we encountered some special cases where a simple conversion was not enough
-to satisfy the *VScode* editor. The bundler would keep working without the
-additional declarations as the *JavaScript* was fine already and the *TypeScript*
-additions get stripped anyway.
+As *TypeScript* is an extension of *JavaScript* each valid `.js` file should
+also work as `.ts` file. We encountered some special cases where updating the
+file extension was not enough to satisfy the *VScode* editor, though.
+
 
