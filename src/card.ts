@@ -1,26 +1,22 @@
 import { html, LitElement } from "lit";
 import styles from "./card.styles";
+import { property } from "lit/decorators/property";
 
 export class ToggleCardTypeScript extends LitElement {
-  declare _header;
-  declare _entity;
-  declare _name;
-  declare _state;
-  declare _status;
+  // internal reactive states
+  @property({ state: true })
+  _header;
+  @property({ state: true })
+  _entity;
+  @property({ state: true })
+  _name;
+  @property({ state: true })
+  _state;
+  @property({ state: true })
+  _status;
 
   // private property
   _hass;
-
-  // internal reactive states
-  static get properties() {
-    return {
-      _header: { state: true },
-      _entity: { state: true },
-      _name: { state: true },
-      _state: { state: true },
-      _status: { state: true },
-    };
-  }
 
   // lifecycle interface
   setConfig(config) {

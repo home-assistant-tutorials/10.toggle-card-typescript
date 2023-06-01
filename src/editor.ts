@@ -1,14 +1,9 @@
 import { css, html, LitElement } from "lit";
+import { property } from "lit/decorators/property";
 
 export class ToggleCardTypeScriptEditor extends LitElement {
-  declare _config;
-
-  static get properties() {
-    return {
-      // hass: {},
-      _config: { state: true },
-    };
-  }
+  @property({ state: true })
+  _config;
 
   setConfig(config) {
     this._config = config;
