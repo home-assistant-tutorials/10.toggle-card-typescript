@@ -1,26 +1,35 @@
-import { html, LitElement } from "lit";
-import styles from "./card.styles";
-import { property } from "lit/decorators/property";
+import {
+  html,
+  LitElement,
+  TemplateResult,
+  nothing,
+  TemplateInstance,
+} from "lit";
+import { styles } from "./card.styles";
+import { state } from "lit/decorators/state";
+
+import { HassEntity } from "home-assistant-js-websocket";
+import { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
+
+interface Config extends LovelaceCardConfig {
+  header: string;
+  entity: string;
+}
 
 export class ToggleCardTypeScript extends LitElement {
   // internal reactive states
-  @property({ state: true })
-  _header;
-  @property({ state: true })
-  _entity;
-  @property({ state: true })
-  _name;
-  @property({ state: true })
-  _state;
-  @property({ state: true })
-  _status;
+  @state() private _header: string | typeof nothing;
+  @state() private _entity: string;
+  @state() private _name: string;
+  @state() private _state: HassEntity;
+  @state() private _status: string;
 
   // private property
-  _hass;
+  private _hass;
 
   // lifecycle interface
-  setConfig(config) {
-    this._header = config.header;
+  setConfig(config: Config) {
+    this._header = config.header === "" ? nothing : config.header;
     this._entity = config.entity;
     // call set hass() to immediately adjust to a changed entity
     // while editing the entity in the card editor
@@ -29,7 +38,7 @@ export class ToggleCardTypeScript extends LitElement {
     }
   }
 
-  set hass(hass) {
+  set hass(hass: HomeAssistant) {
     this._hass = hass;
     this._state = hass.states[this._entity];
     if (this._state) {
@@ -43,8 +52,7 @@ export class ToggleCardTypeScript extends LitElement {
   static styles = styles;
 
   render() {
-    console.log("RENDER");
-    let content;
+    let content: TemplateResult;
     if (!this._state) {
       content = html` <p class="error">${this._entity} is unavailable.</p> `;
     } else {
@@ -68,7 +76,7 @@ export class ToggleCardTypeScript extends LitElement {
   }
 
   // event handling
-  doToggle(event) {
+  doToggle() {
     this._hass.callService("input_boolean", "toggle", {
       entity_id: this._entity,
     });

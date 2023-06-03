@@ -537,7 +537,7 @@ const $19fe8e3abedf4df0$var$e = window, $19fe8e3abedf4df0$var$r = $19fe8e3abedf4
     converter: $19fe8e3abedf4df0$export$7312b35fbf521afb,
     reflect: !1,
     hasChanged: $19fe8e3abedf4df0$export$53a6892c50694894
-};
+}, $19fe8e3abedf4df0$var$d = "finalized";
 class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
     constructor(){
         super(), this._$Ei = new Map, this.isUpdatePending = !1, this.hasUpdated = !1, this._$El = null, this.u();
@@ -577,8 +577,8 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
         return this.elementProperties.get(t) || $19fe8e3abedf4df0$var$l;
     }
     static finalize() {
-        if (this.hasOwnProperty("finalized")) return !1;
-        this.finalized = !0;
+        if (this.hasOwnProperty($19fe8e3abedf4df0$var$d)) return !1;
+        this[$19fe8e3abedf4df0$var$d] = !0;
         const t = Object.getPrototypeOf(this);
         if (t.finalize(), void 0 !== t.h && (this.h = [
             ...t.h
@@ -720,11 +720,11 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
     updated(t) {}
     firstUpdated(t) {}
 }
-$19fe8e3abedf4df0$export$c7c07a37856565d.finalized = !0, $19fe8e3abedf4df0$export$c7c07a37856565d.elementProperties = new Map, $19fe8e3abedf4df0$export$c7c07a37856565d.elementStyles = [], $19fe8e3abedf4df0$export$c7c07a37856565d.shadowRootOptions = {
+$19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d] = !0, $19fe8e3abedf4df0$export$c7c07a37856565d.elementProperties = new Map, $19fe8e3abedf4df0$export$c7c07a37856565d.elementStyles = [], $19fe8e3abedf4df0$export$c7c07a37856565d.shadowRootOptions = {
     mode: "open"
 }, null == $19fe8e3abedf4df0$var$o || $19fe8e3abedf4df0$var$o({
     ReactiveElement: $19fe8e3abedf4df0$export$c7c07a37856565d
-}), (null !== ($19fe8e3abedf4df0$var$s = $19fe8e3abedf4df0$var$e.reactiveElementVersions) && void 0 !== $19fe8e3abedf4df0$var$s ? $19fe8e3abedf4df0$var$s : $19fe8e3abedf4df0$var$e.reactiveElementVersions = []).push("1.6.1");
+}), (null !== ($19fe8e3abedf4df0$var$s = $19fe8e3abedf4df0$var$e.reactiveElementVersions) && void 0 !== $19fe8e3abedf4df0$var$s ? $19fe8e3abedf4df0$var$s : $19fe8e3abedf4df0$var$e.reactiveElementVersions = []).push("1.6.2");
 
 
 /**
@@ -1077,46 +1077,50 @@ const $ab210b2da7b39b9d$export$f5c524615a7708d6 = {
 
 
 
-var $120c5a859c012378$export$2e2bcd8739ae039 = (0, $def2de46b9306e8a$export$dbf350e5966cf602)`
-    .error {
-        color: red;
-    }
-    .dl {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .dt {
-        display: flex;
-        align-content: center;
-        flex-wrap: wrap;
-    }
-    .dd {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, auto) minmax(0, 2fr));
-        margin: 0;
-    }
-    .toggle {
-        padding: 0.6em;
-        border: grey;
-        border-radius: 50%;
-    }
-    .toggle.on { background-color: green; }
-    .toggle.off{ background-color: red; }
-    .button {
-        display: block;
-        border: outset 0.2em;
-        border-radius: 50%;
-        border-color: silver;
-        background-color: silver;
-        width: 1.4em;
-        height: 1.4em;
-    }
-    .value {
-        padding-left: 0.5em;
-        display: flex;
-        align-content: center;
-        flex-wrap: wrap;
-    }
+const $120c5a859c012378$export$9dd6ff9ea0189349 = (0, $def2de46b9306e8a$export$dbf350e5966cf602)`
+  .error {
+    color: red;
+  }
+  .dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dt {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+  }
+  .dd {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, auto) minmax(0, 2fr));
+    margin: 0;
+  }
+  .toggle {
+    padding: 0.6em;
+    border: grey;
+    border-radius: 50%;
+  }
+  .toggle.on {
+    background-color: green;
+  }
+  .toggle.off {
+    background-color: red;
+  }
+  .button {
+    display: block;
+    border: outset 0.2em;
+    border-radius: 50%;
+    border-color: silver;
+    background-color: silver;
+    width: 1.4em;
+    height: 1.4em;
+  }
+  .value {
+    padding-left: 0.5em;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+  }
 `;
 
 
@@ -1141,11 +1145,23 @@ var $120c5a859c012378$export$2e2bcd8739ae039 = (0, $def2de46b9306e8a$export$dbf3
         finisher (n) {
             n.createProperty(e.key, i);
         }
-    };
-function $9cd908ed2625c047$export$d541bacb2bda4494(e) {
-    return (n, t)=>void 0 !== t ? ((i, e, n)=>{
-            e.constructor.createProperty(n, i);
-        })(e, n, t) : $9cd908ed2625c047$var$i(e, n);
+    }, $9cd908ed2625c047$var$e = (i, e, n)=>{
+    e.constructor.createProperty(n, i);
+};
+function $9cd908ed2625c047$export$d541bacb2bda4494(n) {
+    return (t, o)=>void 0 !== o ? $9cd908ed2625c047$var$e(n, t, o) : $9cd908ed2625c047$var$i(n, t);
+}
+
+
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */ function $04c21ea1ce1f6057$export$ca000e230c0caa3e(t) {
+    return (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
+        ...t,
+        state: !0
+    });
 }
 
 
@@ -1154,7 +1170,7 @@ function $9cd908ed2625c047$export$d541bacb2bda4494(e) {
 class $a399cc6bbb0eb26a$export$9eee6fffd22320a0 extends (0, $ab210b2da7b39b9d$export$3f2f9f5909897157) {
     // lifecycle interface
     setConfig(config) {
-        this._header = config.header;
+        this._header = config.header === "" ? (0, $f58f44579a4747ac$export$45b790e32b2810ee) : config.header;
         this._entity = config.entity;
         // call set hass() to immediately adjust to a changed entity
         // while editing the entity in the card editor
@@ -1171,10 +1187,9 @@ class $a399cc6bbb0eb26a$export$9eee6fffd22320a0 extends (0, $ab210b2da7b39b9d$ex
     }
     static #_ = (()=>{
         // declarative part
-        this.styles = (0, $120c5a859c012378$export$2e2bcd8739ae039);
+        this.styles = (0, $120c5a859c012378$export$9dd6ff9ea0189349);
     })();
     render() {
-        console.log("RENDER");
         let content;
         if (!this._state) content = (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)` <p class="error">${this._entity} is unavailable.</p> `;
         else content = (0, $f58f44579a4747ac$export$c0bb0b647f701bb5)`
@@ -1195,7 +1210,7 @@ class $a399cc6bbb0eb26a$export$9eee6fffd22320a0 extends (0, $ab210b2da7b39b9d$ex
     `;
     }
     // event handling
-    doToggle(event) {
+    doToggle() {
         this._hass.callService("input_boolean", "toggle", {
             entity_id: this._entity
         });
@@ -1212,29 +1227,19 @@ class $a399cc6bbb0eb26a$export$9eee6fffd22320a0 extends (0, $ab210b2da7b39b9d$ex
     }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
-        state: true
-    })
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $a399cc6bbb0eb26a$export$9eee6fffd22320a0.prototype, "_header", void 0);
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
-        state: true
-    })
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $a399cc6bbb0eb26a$export$9eee6fffd22320a0.prototype, "_entity", void 0);
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
-        state: true
-    })
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $a399cc6bbb0eb26a$export$9eee6fffd22320a0.prototype, "_name", void 0);
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
-        state: true
-    })
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $a399cc6bbb0eb26a$export$9eee6fffd22320a0.prototype, "_state", void 0);
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
-        state: true
-    })
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $a399cc6bbb0eb26a$export$9eee6fffd22320a0.prototype, "_status", void 0);
 
 
@@ -1278,10 +1283,11 @@ class $d067581fc0d59830$export$428b02af6307b05 extends (0, $ab210b2da7b39b9d$exp
         `;
     }
     handleChangedEvent(changedEvent) {
+        const target = changedEvent.target;
         // this._config is readonly, copy needed
-        var newConfig = Object.assign({}, this._config);
-        if (changedEvent.target.id == "header") newConfig.header = changedEvent.target.value;
-        else if (changedEvent.target.id == "entity") newConfig.entity = changedEvent.target.value;
+        const newConfig = Object.assign({}, this._config);
+        if (target.id == "header") newConfig.header = target.value;
+        else if (target.id == "entity") newConfig.entity = target.value;
         const messageEvent = new CustomEvent("config-changed", {
             detail: {
                 config: newConfig
@@ -1293,9 +1299,7 @@ class $d067581fc0d59830$export$428b02af6307b05 extends (0, $ab210b2da7b39b9d$exp
     }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $9cd908ed2625c047$export$d541bacb2bda4494)({
-        state: true
-    })
+    (0, $04c21ea1ce1f6057$export$ca000e230c0caa3e)()
 ], $d067581fc0d59830$export$428b02af6307b05.prototype, "_config", void 0);
 
 

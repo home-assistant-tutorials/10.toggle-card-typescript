@@ -229,7 +229,7 @@ browser versions from the settings in `package.json`. So for now I understand
 this `target` as the version of *EcmaScript* I want to work with. Then I specify
 in `package.json` what browsers I want to support.
 
-### Adding decorators
+## Adding decorators
 
 Decorators are a stage 3 proposal for addition to the ECMAScript standard. Still
 [the browsers don't support](https://caniuse.com/decorators) it. We need the
@@ -250,24 +250,20 @@ export class ToggleCardTypeScriptEditor extends LitElement {
       _config: { state: true },
     };
   }
-
-  [ ... ]
 ```
 
 becomes
 
 ```js
-import { property } from "lit/decorators/property";
+import { state } from "lit/decorators/state";
 
 export class ToggleCardTypeScriptEditor extends LitElement {
-  @property({ state: true })
-  _config;
-
-  [ ... ]
+  @state() _config;
 ```
 
-When the code is parsed the `@property` decorator is detected and a matching
-function is called. This function does the same as the previous code.
+When the code is parsed the `@state` decorator is detected and a matching
+function is called. This function does the same as the previous code. Public
+reactive properties would use the `@property` decorator.
 
 More about decorators:
 
@@ -292,3 +288,209 @@ but it's recommended to explicitly ensure this setting is false.
 I try. Setting it to true breaks the reactive properties. Like with the missing
 declarations above, this is related to the interactions of class fields and
 reactive properties.
+
+## Static typing
+
+Adding static types to JavaScript has two major goals. First, the editor knows
+about the content of a variable and can assist with documentation. Second, some
+errors are revealed already at time of editing.
+
+Libraries need a well declared interface that the browser can help with
+documentation. What about frontend cards? They are not not used by other code as
+libraries. This reason doesn't count. I don't need to create a `types.ts` file
+for the card.
+
+Using *TypeScript* for cards may overdo for this reason. On the other hand it
+is not possible to test the user interface of the card with simple unit tests.
+Maybe I don't do automated testing at all. That is a reason to use the edit
+time error detection of TypeScript at least.
+
+### Internal reactive states
+
+The internal reactive states (the model) is my first concern to type.
+
+  ```ts
+  // internal reactive states
+  @state() _header: string | typeof nothing;
+  @state() _entity: string;
+  @state() _name: string;
+  @state() _state: HassEntity;
+  @state() _state: {
+    state: string;
+    attributes: {
+      friendly_name: string;
+    };
+  };
+  @state() _status: string;
+  ```
+
+While all other types are strings the `_state` property is nested. I have to
+declare all parts I want to use, to get rid of all errors in the editor. The
+header alternatively (`|`) accepts [the type
+of](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html) the *Lit*
+value `nothing`.
+
+I visit this intro [TypeScript for JavaScript
+Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+to get started quickly with the syntax.
+
+Alternatively I could declare an interface for `_state` at the top of the file
+
+```ts
+interface State {
+  state: string;
+  attributes: {
+    friendly_name: string;
+  };
+}
+```
+
+and use this interface to keep the file less cluttered.
+
+```js
+  @property({ state: true })
+  _state: State;
+  @property({ state: true })
+  _status: string;
+```
+
+Contrary to the simple data types interfaces are uppercase.
+
+### Importing types
+
+Couldn't I just import the type declaration of the state object? What about the
+`_hass` reference?
+
+Now I have to differ two types of imports. From *Lit* I import libraries I want
+to use. The *hass* object on the other hand is injected from outside. I don't
+need to import the library. I only want to know the *interface*. I could compare
+this to a header file in *C*, which only contains the declarations of a library.
+
+Indeed, *TypeScript* [describes *declaration
+files*](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+and they would be installed by `npm`. I find the [file `types.ts` for the Home
+Assistant
+frontend](https://github.com/home-assistant/frontend/blob/dev/src/types.ts) on
+Github. It contains a declaration of the hass Object as `HomeAssistant`.
+I don't have a clue how to install it with `npm`, though.
+
+It gets even weirder. Taking a look into this file it imports a lot of
+declarations from an package `home-assistant-js-websocket` for example
+`HassEntities`. Now this is an exotic source to retrieve this declarations.
+
+The main advantage is that `home-assistant-js-websocket` is lean and self
+contained. It has no other dependencies and can be installed by `npm`. Seems
+somebody took the lazy road and created another idiosyncratic corner of *Home
+Assistant*. I will do the same. I want the declaration of `HassEntity`.
+
+A declaration of `HomeAssistant`, that I can install by `npm`, I find in a
+similar odd corner a [custom cards
+porject](https://github.com/custom-cards/custom-card-helpers/blob/master/src/types.ts).
+I note it hasn't been updated for over two years and I would call it dead for
+this reason.
+
+To avoid this strange imports and it dependencies I could copy the declarations.
+That would likely be a reasonable approach. However, this is about imports of
+declarations. Let's do it.
+
+```ts
+import { HassEntity } from "home-assistant-js-websocket";
+import { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
+```
+
+I need to extend `LovelaceCardConfig` with my properties.
+
+```ts
+interface Config extends LovelaceCardConfig {
+  header: string;
+  entity: string;
+}
+```
+
+Actually this would work as well.
+
+```ts
+interface Config {
+  header: string;
+  entity: string;
+}
+```
+
+Now I can use `HassEntity`, `HomeAssistant` and `Config` to type the injected
+data.
+
+```ts
+  @state() private _state: HassEntity;
+  [ ... ]
+  setConfig(config: Config) {
+  [ ... ]
+  set hass(hass: HomeAssistant) {
+  [ ... ]
+```
+
+### `TemplateResult`
+
+Hovering over the `html` tag does reveal the return type is `TemplateResult`. I
+import this declaration from `Lit`.
+
+```ts
+import { html, LitElement, TemplateResult, nothing } from "lit";
+[...]
+    let content: TemplateResult;
+    if (!this._state) {
+      content = html` <p class="error">${this._entity} is unavailable.</p> `;
+```
+
+Alternatively I use a combination of `ReturnType<>` and `typeof`
+[as documented here](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html).
+
+```ts
+  render() {
+    let content: ReturnType<typeof html>;
+```
+
+### `private`
+
+Another feature of *TypeScript* is to declare elements of a class as `private`.
+There are no private properties in *JavaScript* (so far). I must not forget
+*TypeScript* is stripped and just an instrument to assist the writing of code.
+
+```js
+
+  // internal reactive states
+  @state() private _header: string | typeof nothing;
+  @state() private _entity: string;
+  @state() private _name: string;
+  @state() private _state: HassEntity;
+  @state() private _status: string;
+
+  // private property
+  private _hass;
+```
+
+For the states there are three levels each of which is screaming `private`.
+The `@state()` decorator is the level of *Lit*. It will handle the property
+as *internal reative propery*. The `private` key word is the level of
+*TypeScript*. The editor should complain in case of privacy violation. The
+leading underscore is a convention to mark the property as private for the
+programmers.
+
+It's a lot of redundancy. I may consider to drop the underscore, as Lit takes
+care. Maybe *TypeScript* would be smart enough to recognize the privacy by the
+`@state()` tag anyway.
+
+###  Event handler targets
+
+In the card editor I need to cast the target of the event to
+`HTMLInputElement` so that the properties `target.id` and `target.value`
+become valid.
+
+```ts
+  handleChangedEvent(changedEvent: Event) {
+    const target = changedEvent.target as HTMLInputElement;
+    // this._config is readonly, copy needed
+    const newConfig = Object.assign({}, this._config);
+    if (target.id == "header") {
+      newConfig.header = target.value;
+    [ ... ]
+```

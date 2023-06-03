@@ -1,9 +1,8 @@
 import { css, html, LitElement } from "lit";
-import { property } from "lit/decorators/property";
+import { state } from "lit/decorators/state";
 
 export class ToggleCardTypeScriptEditor extends LitElement {
-  @property({ state: true })
-  _config;
+  @state() _config;
 
   setConfig(config) {
     this._config = config;
@@ -41,13 +40,14 @@ export class ToggleCardTypeScriptEditor extends LitElement {
         `;
   }
 
-  handleChangedEvent(changedEvent) {
+  handleChangedEvent(changedEvent: Event) {
+    const target = changedEvent.target as HTMLInputElement;
     // this._config is readonly, copy needed
-    var newConfig = Object.assign({}, this._config);
-    if (changedEvent.target.id == "header") {
-      newConfig.header = changedEvent.target.value;
-    } else if (changedEvent.target.id == "entity") {
-      newConfig.entity = changedEvent.target.value;
+    const newConfig = Object.assign({}, this._config);
+    if (target.id == "header") {
+      newConfig.header = target.value;
+    } else if (target.id == "entity") {
+      newConfig.entity = target.value;
     }
     const messageEvent = new CustomEvent("config-changed", {
       detail: { config: newConfig },
