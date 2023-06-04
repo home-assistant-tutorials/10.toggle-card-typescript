@@ -6,7 +6,7 @@ Migration to TypeScript
 
 ***
 
-* @status: alpha
+* @status: beta
 * @published: June 2023
 * @author: Elmar Hinz
 * @name: `toggle-card-typescript`
@@ -14,11 +14,11 @@ Migration to TypeScript
 
 You learn:
 
-* How to install the required tools for *TypoScript*.
-* How to set up the configuration files.
-* How to migrate the code to TypoScript.
-* How to enrich the code with typing.
-* How to import some interfaces for custom card developmnet.
+* how to install the required tools for *TypeScript*
+* how to set up the configuration files
+* how to migrate the code to TypoScript
+* how to enrich the code with typing
+* how to import some interfaces for custom card development
 
 ## Goal
 
