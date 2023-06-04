@@ -434,6 +434,12 @@ data.
   [ ... ]
 ```
 
+I observe that interfaces on the level of *TypeScript* are imported the same way
+as classes on the level of *JavaScript*. Without being experienced in
+*TypeScript* the sources become confusing to read. I can't simply distinguish
+the one level from the other. *TypeScript* looks confusing and bloated from this
+perspective.
+
 ### `TemplateResult`
 
 Hovering over the `html` tag does reveal the return type is `TemplateResult`. I
@@ -454,12 +460,6 @@ Alternatively I use a combination of `ReturnType<>` and `typeof`
   render() {
     let content: ReturnType<typeof html>;
 ```
-
-I observe that interfaces on the level of *TypeScript* are imported the same way
-as classes on the level of *JavaScript*. Without being experienced in
-*TypeScript* the sources become confusing to read. I can't simply distinguish
-the one level from the other. *TypeScript* looks confusing and bloated from this
-perspective.
 
 ### `private`
 
