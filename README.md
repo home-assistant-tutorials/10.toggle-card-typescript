@@ -436,7 +436,7 @@ data.
 
 I observe that interfaces on the level of *TypeScript* are imported the same way
 as classes on the level of *JavaScript*. Without being experienced in
-*TypeScript* the sources become confusing to read. I can't simply distinguish
+*TypeScript* the sources become confusing to read. I can't easily distinguish
 the one level from the other. *TypeScript* looks confusing and bloated from this
 perspective.
 
