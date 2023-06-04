@@ -131,7 +131,7 @@ export class ToggleCardTypeScript extends LitElement {
   [ ... ]
 ```
 
-I don't bother with types. The plan is to replace this approach with `@property`
+I don't bother with types. The plan is to replace this approach with `@state`
 decorators of *Lit*.
 
 ### `editor.ts`
@@ -399,10 +399,25 @@ To avoid this strange imports and it dependencies I could copy the declarations.
 That would likely be a reasonable approach. However, this is about imports of
 declarations. Let's do it.
 
+Install the packages.
+
+```sh
+npm add custom-card-helpers
+npm add home-assistant-js-websocket
+```
+
+Import some interface declarations.
+
 ```ts
 import { HassEntity } from "home-assistant-js-websocket";
 import { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
 ```
+
+I observe that interfaces on the level of *TypeScript* are imported the same way
+as classes on the level of *JavaScript*. Without being experienced in
+*TypeScript* the sources become confusing to read. I can't easily distinguish
+the one level from the other. *TypeScript* looks confusing and bloated from this
+perspective.
 
 I need to extend `LovelaceCardConfig` with my properties.
 
@@ -433,12 +448,6 @@ data.
   set hass(hass: HomeAssistant) {
   [ ... ]
 ```
-
-I observe that interfaces on the level of *TypeScript* are imported the same way
-as classes on the level of *JavaScript*. Without being experienced in
-*TypeScript* the sources become confusing to read. I can't easily distinguish
-the one level from the other. *TypeScript* looks confusing and bloated from this
-perspective.
 
 ### `TemplateResult`
 
