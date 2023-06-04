@@ -14,11 +14,15 @@ Migration to TypeScript
 
 You learn:
 
+* How to install the required tools for *TypoScript*.
+* How to set up the configuration files.
+* How to migrate the code to TypoScript.
+* How to enrich the code with typing.
+* How to import some interfaces for custom card developmnet.
+
 ## Goal
 
-Migrating the sources from *JavaScript* to *TypeScript*, installing the tools
-and adjusting the setup of the project as required.
-
+Migrating the sources from *JavaScript* to *TypeScript* and applying it.
 
 ## Prerequisites
 
@@ -31,6 +35,8 @@ and adjusting the setup of the project as required.
 Find all sources inside the `src/` folder!
 
 ## About TypeScript
+
+TODO
 
 ## Usage
 
@@ -449,6 +455,12 @@ Alternatively I use a combination of `ReturnType<>` and `typeof`
     let content: ReturnType<typeof html>;
 ```
 
+I observe that interfaces on the level of *TypeScript* are imported the same way
+as classes on the level of *JavaScript*. Without being experienced in
+*TypeScript* the sources become confusing to read. I can't simply distinguish
+the one level from the other. *TypeScript* looks confusing and bloated from this
+perspective.
+
 ### `private`
 
 Another feature of *TypeScript* is to declare elements of a class as `private`.
@@ -485,6 +497,20 @@ In the card editor I need to cast the target of the event to
 `HTMLInputElement` so that the properties `target.id` and `target.value`
 become valid.
 
+JS:
+
+```js
+    handleChangedEvent(changedEvent) {
+        // this._config is readonly, copy needed
+        const newConfig = Object.assign({}, this._config);
+        if (changedEvent.target.id == "header") {
+            newConfig.header = changedEvent.target.value;
+    [ ... ]
+```
+
+TS:
+
+
 ```ts
   handleChangedEvent(changedEvent: Event) {
     const target = changedEvent.target as HTMLInputElement;
@@ -494,3 +520,10 @@ become valid.
       newConfig.header = target.value;
     [ ... ]
 ```
+
+To be able to type it easily I extract `target` into a dedicated variable.
+Else it would be necessary to deeply specify the `Event` interface.
+
+This is to some degree related to the [*Law of
+Demeter*](https://en.wikipedia.org/wiki/Law_of_Demeter). Instead of searching
+deep knowledge of `Event` I make a return value a new direct *friend*.

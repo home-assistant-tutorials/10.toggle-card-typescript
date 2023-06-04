@@ -1,10 +1,4 @@
-import {
-  html,
-  LitElement,
-  TemplateResult,
-  nothing,
-  TemplateInstance,
-} from "lit";
+import { html, LitElement, TemplateResult, nothing } from "lit";
 import { styles } from "./card.styles";
 import { state } from "lit/decorators/state";
 
