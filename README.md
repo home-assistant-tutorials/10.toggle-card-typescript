@@ -6,7 +6,6 @@ Migration to TypeScript
 
 ***
 
-* @status: beta
 * @published: June 2023
 * @author: Elmar Hinz
 * @name: `toggle-card-typescript`
@@ -36,7 +35,26 @@ Find all sources inside the `src/` folder!
 
 ## About TypeScript
 
-TODO
+Do you expect feedback from your editor? Do you expect suggestions for
+properties and functions of an object? Is it useful, when the editor warns you
+about mismatching types? Do you want to have a context menu, that leads you to
+definition or source of the class of the object under the cursor? The editor has
+to know the type of the content of a variable to perform this services.
+
+Unfortunately *Javascript* is a dynamic typing language for historical reasons.
+It is determined at runtime which type a variable will get, not at editing time.
+In a time when editors didn't have much auto completion, it was handy not write
+a lot of static types. Most users were beginners and didn't know much about
+types at all.
+
+*TypeScript* is a syntax extension to *JavaScript* that adds static typing. At
+time of editing the editor knows about the type of a variable. It can assist you
+as expected with suggestions and error detection.
+
+The cost is you need to transpile *TS* into *JS* before being able to run it.
+You need to mange a tool to do so. *TypeScript* has been developed by Microsoft
+just like the *VS Code* editor. Both are neatly integrated and there is few
+setup required for this editor.
 
 ## Usage
 
